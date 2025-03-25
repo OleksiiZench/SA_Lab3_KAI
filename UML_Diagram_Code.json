@@ -1,0 +1,169 @@
+//www.plantuml.com/plantuml/png/dLRTRXmr5BxkF8KbBh8PICjr2L6ZxOOYRMZKZSJbw6JMsOpgyQpisOJm8q6Hk4A040A9EzwWIlc9A9HNc7qZZktZnUEPqQ9Uj3l-pkVFv-VuE0zq3QfUbI99SW5QiyabbtLs318MN2MV97VUlAoAEJkSpxDfeMikkHhfUdx__lbAvdLHoNrZ7-qUi1o4E8FywQxVSwgA1OfaLdAqcoHtzkpEIvxNbThlLJbW_XITV9OaXx8eGR1qRw_j66FtTdPOytFpglch-GV__wEvNN-r_d7zBHirt-Fw9Vxx5TS_xBATUnIQ4tCn5HWq2Zi_g-n344z7k-nTzdQ2LezE0DqErcF1GLhahAe4Uu_NsViwEnJ59U-WZs2vl8vHUquX5p4UA1Uojk0n1v6TOFOUmdNBS5gKF9iLCkVP5BGZMeBDfwuLwblY1r0QjsXhg4TGdvBto_k4AJa7eRcHQLVWiSoEE9_tu6vdhm6KKNh37K6f2zQK7aICVvDhhkdp1AwqwHz7fEpYEepPn1lqpFwds3GFgmKL7x-ecyEA1y2JLRUqY4bNhk1i0kEZnY11NTDfjEWvC41cLZe0ZeGfTUI3OVMr39BRhZq2J212El2LDdk4jdMTdnOVWvgJyswnnVcnWYiHE-NGA6E4qgdXLSocLGxczhVkPDp74TTTqtUIO38HPUId1TZVJMQVSC51yoqiREPjGhQlXpdXS7FMz228GBkazBA8GMK9mtNrUNmbkQBSkM-JiQsP6jGxGVOCFU1ECrZ_NrtQU7gXECoxxyMi1eKT8NF5IoxTrC9z6skr733ILZgJX0rhuDK1nokT0s-nIRaIW96mT5chZEEgTMfNTsYuMZTSoUpkmDqkYPhT7N4aOF5VT1qJkU1R0PqjYtmVFJXWiRBdr3RBeGiMYCnErzkmH9jSL5Xo1qSFw7VDY_NdpVFcHVDyytpUDBVDdyqhn6_NNwoVuKDwi_wI7jAMOjGMVKRg4h9q-iFZL7owpKUA3rvMNutPHNL574prUTKX4g-lt6J25o74ymjGBB-eYfnx2etnBIoQbrjOhlu-uA1b9XyLTNQYgeM24Z7JYM7lX7Tn2cTS38sG86jwSCm84L0m0ImrMJZbvHBNBbgMkb-FkkXOwduzQeSGI-tFfWCGtmmIbcu-GtlKCtZOIYdJqO61g573fZvtMTjW6drSILq9dXrpkRBTHzpNRVEMtjsxVZwJsa-ezBBvhVcz-Hkrdk7khr7l5zIuCNhhRrf_TOPQSVyRB1WnOyKnUEad19d3VdMCIaOcgjY0bIeNMz5CQGgJIrbzxH9ZDHvmEL-Luby0
+
+@startuml
+
+class Event_Manager
+{
+	+void Add_Listener(std::function<void()> callback)
+	+void Trigger_Event()
+
+	-std::vector<std::function<void()>> Listeners
+}
+
+Animal *-- Event_Manager  /'' Композиція (Володіє) '/
+class Animal
+{
+	+virtual void To_Walk() = 0
+
+	+void To_Eat()
+	+void To_Clean()
+	+bool Get_Is_Alive()
+	+bool Get_Is_Happy()
+	+bool Get_Is_Walking()
+	+bool Get_Is_Clean()
+	+int Get_Meal_Per_Day()
+	+int Get_Time_Since_Last_Meal()
+	+std::string Get_Name()
+
+	+int Meal_Per_Day
+	+int Time_Since_Last_Meal
+	+bool Is_Clean = false
+
+	+Event_Manager On_Feed
+	+Event_Manager On_Clean
+	+Event_Manager On_Care
+
+	#bool Is_Alive
+	#bool Is_Walking
+	#int Eyes
+	#int Paws
+
+	-bool Is_Happy
+	-std::string Name
+}
+
+Animal <|-- Dog
+class Dog
+{
+	+void To_Walk()
+	+void To_Run()
+	+bool Get_Is_Running()
+
+	-bool Is_Running
+}
+
+Animal <|-- Canary
+class Canary
+{
+	+void To_Walk()
+
+	+void To_Sing()
+	+void To_Fly()
+
+	+bool Get_Is_Singing()
+	+bool Get_Is_Flying()
+
+	-bool Has_Wings
+	-bool Is_Singing
+	-bool Is_Flying
+}
+
+Animal <|-- Lizard
+class Lizard
+{
+	+void To_Walk()
+
+	+void To_Crawl()
+	+bool Get_Is_Crawling()
+
+	-bool Is_Crawling
+}
+
+class Animal_Location
+{
+	+virtual std::string Get_Animal_Location() = 0;
+
+	+void Add_Animal(Animal *animal)
+	+void Release_Animal(Animal *animal)
+	+void Feed_Animal(Animal *animal)
+	+void Clean_Animal(Animal *animal)
+	+std::vector<Animal*> Get_Animals()
+
+	-std::vector<Animal*> Animals
+}
+
+Animal_Location <|-- Owner
+class Owner
+{
+	+std::string Get_Animal_Location()
+}
+
+Animal_Location <|-- Pet_Store
+class Pet_Store
+{
+	+std::string Get_Animal_Location()
+}
+
+class Thread_Manager
+{
+	+void Start_Increment_Time()
+	+void Stop_Increment_Time()
+	+void Start_Animal_Management(std::function<void()> animal_manager, Emulator *ptr_emul)
+	+void Stop_Animal_Management()
+	+int Get_Time_Since_Start()
+
+	-void Increment_Time_Since_Start()
+
+	-bool Stop_Flag_Increment
+	-bool Stop_Flag_Animal
+	-std::atomic<int> Time_Since_Start
+	-std::thread Increment_Thread
+	-std::thread Animal_Thread
+}
+
+Emulator o-- Thread_Manager  /'' Аграгація (використовує) '/
+Emulator o-- Animal_Location
+Emulator o-- Animal
+class Emulator
+{
+	+void Start_Emulator()
+	+void Add_Free_Animal(Animal *animal)
+
+	-void Show_Animal_Info(Animal *animal)
+	-void Animal_Management()
+	-void Dog_Management(char choice)
+	-void Canary_Management(char choice)
+	-void Lizard_Management(char choice)
+	-void Stop_Emulator()
+
+	-bool Exit_Program
+	-int Increment
+	-std::string Label
+	-std::vector<Animal*> Free_Animals
+	-std::vector<Animal*> All_Animals
+	-Dog *Dog_Temp
+	-Canary *Canary_Temp
+	-Lizard *Lizard_Temp
+	-Owner *Owner_Location
+	-Pet_Store *Pet_Store_Location
+	-Animal_Location *Current_Animal_Location
+	-Thread_Manager *Emulator_Thread_Manager
+}
+
+Console_Menu o-- Emulator  /'' Аграгація (використовує) '/
+Console_Menu ..> Animal  /'' Залежнітсь (Створює) '/
+class Console_Menu
+{
+	+void Start_Menu()
+
+	-void Creating_Animal_Menu()
+	-void Dog_Creation_Menu()
+	-void Canary_Creation_Menu()
+	-void Lizard_Creation_Menu()
+
+	-Emulator *Emulator_Manager
+	-Owner *Owner_Location
+	-Pet_Store *Pet_Store_Location
+}
+
+@enduml
