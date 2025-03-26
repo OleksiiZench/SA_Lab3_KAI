@@ -1,11 +1,12 @@
-#pragma once
+п»ї#pragma once
 
 #include <string>
 
 #include "Event_Manager.h"
+#include "ISubject.h"
 
 //------------------------------------------------------------------------------------------------------------
-class Animal
+class Animal : public ISubject
 {
 public:
 	Animal(std::string name);
@@ -13,6 +14,10 @@ public:
 	virtual ~Animal();
 
 	virtual void To_Walk() = 0;
+
+	virtual void Attach(IObserver *observer) override;
+	virtual void Detach(IObserver *observer) override;
+	virtual void Notify(const std::string &message) override;
 
 	void To_Eat();
 	void To_Clean();
@@ -24,8 +29,8 @@ public:
 	int Get_Time_Since_Last_Meal();
 	std::string Get_Name();
 
-	int Meal_Per_Day = 1;  // Скільки прийомів їжі за день
-	int Time_Since_Last_Meal = 0; // Час з останнього прийомі їжі
+	int Meal_Per_Day = 1;  // РЎРєС–Р»СЊРєРё РїСЂРёР№РѕРјС–РІ С—Р¶С– Р·Р° РґРµРЅСЊ
+	int Time_Since_Last_Meal = 0; // Р§Р°СЃ Р· РѕСЃС‚Р°РЅРЅСЊРѕРіРѕ РїСЂРёР№РѕРјСѓ С—Р¶С–
 	bool Is_Clean = false;
 
 	Event_Manager On_Feed;
@@ -41,5 +46,7 @@ protected:
 private:
 	bool Is_Happy = false;
 	std::string Name = "";
+
+	std::vector<IObserver *> observers;
 };
 //------------------------------------------------------------------------------------------------------------

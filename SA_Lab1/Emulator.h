@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Animal.h"
+#include "Animal_Observer.h"
 #include "Canary.h"
 #include "Dog.h"
 #include "Lizard.h"
@@ -40,6 +41,7 @@ private:
 	Owner *Owner_Location = nullptr;
 	Pet_Store *Pet_Store_Location = nullptr;
 	Animal_Location *Current_Animal_Location = nullptr;
-	Thread_Manager *Emulator_Thread_Manager = nullptr; 
+	Thread_Manager *Emulator_Thread_Manager = nullptr;
+	Animal_Observer *Observer = nullptr;
 };
 //------------------------------------------------------------------------------------------------------------

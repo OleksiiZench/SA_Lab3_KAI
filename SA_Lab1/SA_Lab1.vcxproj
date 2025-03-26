@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="Animal_Location.cpp" />
+    <ClCompile Include="Animal_Observer.cpp" />
     <ClCompile Include="Canary.cpp" />
     <ClCompile Include="Console_Menu.cpp" />
     <ClCompile Include="Dog.cpp" />
@@ -144,11 +145,14 @@
   <ItemGroup>
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Animal_Location.h" />
+    <ClInclude Include="Animal_Observer.h" />
     <ClInclude Include="Canary.h" />
     <ClInclude Include="Event_Manager.h" />
     <ClInclude Include="Console_Menu.h" />
     <ClInclude Include="Dog.h" />
     <ClInclude Include="Emulator.h" />
+    <ClInclude Include="IObserver.h" />
+    <ClInclude Include="ISubject.h" />
     <ClInclude Include="Lizard.h" />
     <ClInclude Include="Owner.h" />
     <ClInclude Include="Pet_Store.h" />

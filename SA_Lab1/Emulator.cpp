@@ -1,4 +1,4 @@
-#include "Emulator.h"
+ï»¿#include "Emulator.h"
 
 //------------------------------------------------------------------------------------------------------------
 Emulator::Emulator(Thread_Manager *thread_manager, Owner *owner_location, Pet_Store *pet_store_location)
@@ -6,12 +6,22 @@ Emulator::Emulator(Thread_Manager *thread_manager, Owner *owner_location, Pet_St
 	Emulator_Thread_Manager = thread_manager;
 	Owner_Location = owner_location;
 	Pet_Store_Location = pet_store_location;
+	Observer = new Animal_Observer;
 }
 //------------------------------------------------------------------------------------------------------------
 void Emulator::Start_Emulator()
 {
 	int check = 0;
 	int counter = 0;
+
+	for (Animal *animal : Owner_Location->Get_Animals() )
+		animal->Attach(Observer);
+
+	for (Animal *animal : Pet_Store_Location->Get_Animals() )
+		animal->Attach(Observer);
+
+	for (Animal *animal : Free_Animals)
+		animal->Attach(Observer);
 
 	Emulator_Thread_Manager->Start_Increment_Time();
 	Emulator_Thread_Manager->Start_Animal_Management(std::bind(&Emulator::Animal_Management, this), this);
@@ -22,7 +32,7 @@ void Emulator::Start_Emulator()
 		std::cout << "Time Since Start: " << Emulator_Thread_Manager->Get_Time_Since_Start() << std::endl << std::endl;
 
 		if (check < Emulator_Thread_Manager->Get_Time_Since_Start() )
-		{// Äëÿ äîäàâàííÿ ÷àñó äî òâàðèí ç ìîìåòó ¿æ³
+		{// Ð”Ð»Ñ Ð´Ð¾Ð´Ð°Ð²Ð°Ð½Ð½Ñ Ñ‡Ð°ÑÑƒ Ð´Ð¾ Ñ‚Ð²Ð°Ñ€Ð¸Ð½ Ð· Ð¼Ð¾Ð¼ÐµÑ‚Ñƒ Ñ—Ð¶Ñ–
 			check++;
 			Increment = 1;
 		}
@@ -38,13 +48,13 @@ void Emulator::Start_Emulator()
 				Current_Animal_Location = Owner_Location;
 			}
 
-			if ((Emulator_Thread_Manager->Get_Time_Since_Start() > 0) && (Emulator_Thread_Manager->Get_Time_Since_Start() % 24) == 0)  // Êîëè ïðîéøëà äîáà ñêèäóºìî Meal_Per_Day òà Is_Clean äëÿ òâàðèí ÿê³ æèâóòü â õàçÿ¿íà
+			if ((Emulator_Thread_Manager->Get_Time_Since_Start() > 0) && (Emulator_Thread_Manager->Get_Time_Since_Start() % 24) == 0)  // ÐšÐ¾Ð»Ð¸ Ð¿Ñ€Ð¾Ð¹ÑˆÐ»Ð° Ð´Ð¾Ð±Ð° ÑÐºÐ¸Ð´ÑƒÑ”Ð¼Ð¾ Meal_Per_Day Ñ‚Ð° Is_Clean Ð´Ð»Ñ Ñ‚Ð²Ð°Ñ€Ð¸Ð½ ÑÐºÑ– Ð¶Ð¸Ð²ÑƒÑ‚ÑŒ Ð² Ñ…Ð°Ð·ÑÑ—Ð½Ð°
 			{
 				animal->Meal_Per_Day = 0;
 				animal->Is_Clean = 0;
 			}
 
-			animal->Time_Since_Last_Meal += Increment; // Äîäàºìî ÷àñ äî â³ä îñòàííüîãî ïðèéîìó ¿æ³, áî òâàðèíà íå íà âîë³
+			animal->Time_Since_Last_Meal += Increment; // Ð”Ð¾Ð´Ð°Ñ”Ð¼Ð¾ Ñ‡Ð°Ñ Ð´Ð¾ Ð²Ñ–Ð´ Ð¾ÑÑ‚Ð°Ð½Ð½ÑŒÐ¾Ð³Ð¾ Ð¿Ñ€Ð¸Ð¹Ð¾Ð¼Ñƒ Ñ—Ð¶Ñ–, Ð±Ð¾ Ñ‚Ð²Ð°Ñ€Ð¸Ð½Ð° Ð½Ðµ Ð½Ð° Ð²Ð¾Ð»Ñ–
 
 			All_Animals.push_back(animal);
 			Show_Animal_Info(animal);
@@ -59,13 +69,13 @@ void Emulator::Start_Emulator()
 				Current_Animal_Location = Pet_Store_Location;
 			}
 
-			if ((Emulator_Thread_Manager->Get_Time_Since_Start() > 0) && (Emulator_Thread_Manager->Get_Time_Since_Start() % 24) == 0)  // Êîëè ïðîéøëà äîáà ñêèäóºìî Meal_Per_Day òà Is_Clean äëÿ òâàðèí ÿê³ æèâóòü â çîîìàãàçèí³
+			if ((Emulator_Thread_Manager->Get_Time_Since_Start() > 0) && (Emulator_Thread_Manager->Get_Time_Since_Start() % 24) == 0)  // ÐšÐ¾Ð»Ð¸ Ð¿Ñ€Ð¾Ð¹ÑˆÐ»Ð° Ð´Ð¾Ð±Ð° ÑÐºÐ¸Ð´ÑƒÑ”Ð¼Ð¾ Meal_Per_Day Ñ‚Ð° Is_Clean Ð´Ð»Ñ Ñ‚Ð²Ð°Ñ€Ð¸Ð½ ÑÐºÑ– Ð¶Ð¸Ð²ÑƒÑ‚ÑŒ Ð² Ð·Ð¾Ð¾Ð¼Ð°Ð³Ð°Ð·Ð¸Ð½Ñ–
 			{
 				animal->Meal_Per_Day = 0;
 				animal->Is_Clean = 0;
 			}
 
-			animal->Time_Since_Last_Meal += Increment; // Äîäàºìî ÷àñ äî â³ä îñòàííüîãî ïðèéîìó ¿æ³, áî òâàðèíà íå íà âîë³
+			animal->Time_Since_Last_Meal += Increment; // Ð”Ð¾Ð´Ð°Ñ”Ð¼Ð¾ Ñ‡Ð°Ñ Ð´Ð¾ Ð²Ñ–Ð´ Ð¾ÑÑ‚Ð°Ð½Ð½ÑŒÐ¾Ð³Ð¾ Ð¿Ñ€Ð¸Ð¹Ð¾Ð¼Ñƒ Ñ—Ð¶Ñ–, Ð±Ð¾ Ñ‚Ð²Ð°Ñ€Ð¸Ð½Ð° Ð½Ðµ Ð½Ð° Ð²Ð¾Ð»Ñ–
 
 			All_Animals.push_back(animal);
 			Show_Animal_Info(animal);
@@ -80,7 +90,7 @@ void Emulator::Start_Emulator()
 				Current_Animal_Location = nullptr;
 			}
 			
-			if ((Emulator_Thread_Manager->Get_Time_Since_Start() % 24) == 0)  // Òâàðèíè ÷èñò³ òà íàãîäîâàí³, áî æèâóòü íà âóëèö³ (îíîâëþºòüñÿ êîæíó äîáó)
+			if ((Emulator_Thread_Manager->Get_Time_Since_Start() % 24) == 0)  // Ð¢Ð²Ð°Ñ€Ð¸Ð½Ð¸ Ñ‡Ð¸ÑÑ‚Ñ– Ñ‚Ð° Ð½Ð°Ð³Ð¾Ð´Ð¾Ð²Ð°Ð½Ñ–, Ð±Ð¾ Ð¶Ð¸Ð²ÑƒÑ‚ÑŒ Ð½Ð° Ð²ÑƒÐ»Ð¸Ñ†Ñ– (Ð¾Ð½Ð¾Ð²Ð»ÑŽÑ”Ñ‚ÑŒÑÑ ÐºÐ¾Ð¶Ð½Ñƒ Ð´Ð¾Ð±Ñƒ)
 			{
 				animal->Is_Clean = 0;
 				animal->To_Clean();

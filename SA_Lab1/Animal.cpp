@@ -19,6 +19,22 @@ void Animal::To_Walk()
 {
 }
 //------------------------------------------------------------------------------------------------------------
+void Animal::Attach(IObserver *observer)
+{
+	observers.push_back(observer);
+}
+//------------------------------------------------------------------------------------------------------------
+void Animal::Detach(IObserver *observer)
+{
+	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end() );
+}
+//------------------------------------------------------------------------------------------------------------
+void Animal::Notify(const std::string &message)
+{
+	for (IObserver *observer : observers)
+		observer->Update(message);
+}
+//------------------------------------------------------------------------------------------------------------
 void Animal::To_Eat()
 {
 	if (Is_Alive != false)
@@ -27,11 +43,13 @@ void Animal::To_Eat()
 		{
 			Meal_Per_Day += 1;
 			Time_Since_Last_Meal = 0;
+			Notify(Name + " ate");
 		}
 		else if (Time_Since_Last_Meal >= 3)
 		{
 			Meal_Per_Day += 1;
 			Time_Since_Last_Meal = 0;
+			Notify(Name + " ate");
 		}
 	}
 }
@@ -41,6 +59,8 @@ void Animal::To_Clean()
 	if (Is_Alive != false)
 	{
 		Is_Clean = true;
+		Notify(Name + " is clean");
+
 	}
 }
 //------------------------------------------------------------------------------------------------------------
