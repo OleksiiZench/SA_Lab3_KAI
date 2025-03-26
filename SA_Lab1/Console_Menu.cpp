@@ -81,7 +81,7 @@ void Console_Menu::Dog_Creation_Menu()
 	std::cout << "Enter a dog's name (max 20 char): ";
 	std::cin >> name;
 
-	dog = new Dog(name);
+	dog = static_cast<Dog *>(Dog_Creator.Create_Animal(name) );
 
 	while (true)
 	{
@@ -147,7 +147,7 @@ void Console_Menu::Canary_Creation_Menu()
 	std::cout << "Enter the name of the canary (max 20 char): ";
 	std::cin >> name;
 
-	canary = new Canary(name);
+	canary = static_cast<Canary *>(Canary_Creator.Create_Animal(name) );
 
 	while (true)
 	{
@@ -213,7 +213,7 @@ void Console_Menu::Lizard_Creation_Menu()
 	std::cout << "Enter the name of the lizard (max 20 char): ";
 	std::cin >> name;
 
-	lizard = new Lizard(name);
+	lizard = static_cast<Lizard *>(Lizard_Creator.Create_Animal(name) );
 
 	while (true)
 	{

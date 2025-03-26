@@ -57,6 +57,15 @@
     <ClCompile Include="Animal_Observer.cpp">
       <Filter>Resource Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dog_Factory.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Canary_Factory.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lizard_Factory.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animal.h">
@@ -99,6 +108,18 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Animal_Observer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnimal_Factory.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Dog_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Canary_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lizard_Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
